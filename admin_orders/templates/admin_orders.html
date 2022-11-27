@@ -1,0 +1,129 @@
+
+{% extends 'admin_base.html' %}
+{% load static%}
+
+{% block content%}
+
+      <div class="content">
+        <h3 class=" mt-5 pb-5" style="color: #4D0808; font-family:poppins;">ORDER MANAGEMENT</h3>
+
+        <table id="example" class="table table-striped table-bordered" style="width:100%">
+        
+          <thead>
+            <tr>
+            <!-- <th scope="col">#</th> -->
+            <th scope="col">order Id</th>
+            <th scope="col">order Date</th>
+            <th scope="col">Customer</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Payment Method</th>
+            <th scope="col">Order Status</th>
+            <th scope="col">Update</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+            {%for ol in oldcart%}
+    
+            <tr>
+            <td >{{ol.order.id}}</td>
+            <td>{{ol.order.ordered_date}}</td>
+            <td>{{ol.order.user}}</td>
+
+            <td>{{ol.total}}</td>
+            
+            <td>{{ol.order.method}}</td>
+            <td>{{ol.order.status}}</td>
+            
+            <td>
+              <form action="/admin_orders/orderUpdate/{{ol.order_id}}" method="post">
+                {%csrf_token%}
+  
+              {% if ol.order.status == 'Confirmed' %}
+  
+                <select class="custom-select tm-select-accounts" name="status" >  
+                 
+                  
+                <option value="Shipped">Shipped</option> 
+                <option value="Cancelled">Cancelled</option> </select>
+                <button  type="submit" class="btn btn-warning btn-sm">Update</button>
+
+              {%elif ol.order.status == 'Shipped' %}
+  
+  
+              <select class="custom-select tm-select-accounts" name="status" >  
+               
+              <option value="Out for delivery">Out for delivery</option> 
+              <option value="Cancelled">Cancelled</option> </select>
+              <button type="submit" class="btn btn-warning btn-sm">Update</button>
+     
+             
+              
+              {%elif ol.order.status == 'Out for delivery' %}
+  
+              <select class="custom-select tm-select-accounts" name="status" >  
+  
+              <option value="Delivered">Delivered</option>  
+              <option value="Cancelled">Cancelled</option></select>
+              <button type="submit" class="btn btn-warning btn-sm">Update</button>
+  
+  
+              {%elif ol.order.status == 'Cancelled' %}
+  
+              
+  
+              {%else%}
+                
+  
+              {%endif%}
+  
+            </form>
+          </td>
+            </tr>
+            
+            {%endfor%}
+            
+            
+          </tbody>
+          </table>
+
+      </div>
+      <script>
+        function update(event) {
+          event.preventDefault();
+          var link = event.currentTarget.href;
+          swal({
+            title: "Are you sure?",
+            text: "proceeding will update the order status",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+            .then((willDelete) => {
+              if (willDelete) {
+                swal("Updated!", {
+                  icon: "success",
+                }).then(() => {
+                  window.location = link;
+                });
+              } else {
+                /* swal("Your imaginary file is safe!");*/
+              }
+            });
+        }
+      </script>
+
+  {%endblock%}
+  {% block js %}
+  <!-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script> -->
+  
+
+      
+  <script>
+    $(document).ready(function () {
+      $('#example').DataTable();
+  });
+  </script>
+
+{%endblock%}

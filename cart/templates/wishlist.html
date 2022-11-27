@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static%}
+
+
+
+{% block content%}
+
+<div class="bg0 m-t-100 p-b-140">
+    <div class="container">
+        <div>
+            <h3 class="text-center font-weight-bold mb-5"
+                style="color: #4D0808; font-family:poppins;text-transform: uppercase;">Wishlist</h3>
+        </div>
+
+        <div class="col-lg-10 col-xl-7 m-lr-auto m-b-50">
+            <div class="m-l-5  m-lr-0-xl">
+                <div class="wrap-table-shopping-cart">
+                    <table class="table table-hover">
+                        <tr class="table_head">
+                            <th class="column-1">Product</th>
+                            <th class="column-2">Name</th>
+                            <th class="column-3">Price</th>
+                        </tr>
+                        {% for wishlist in wishlist %}
+
+                        <tr class="table_row">
+                            <td class="column-1">
+                                <div class="how-itemcart1">
+                                    <img src="{{wishlist.product.image.url}}" alt="IMG">
+                                </div>
+                            </td>
+                            <td class="column-2">{{wishlist.product.product_name}}</td>
+                            <td class="column-3">{{wishlist.product.price}}</td>
+                            <td><a href="/cart/addTocart/{{wishlist.product.id}}" class="btn btn-outline-secondary">Add To Cart</a></td>
+                            <td><a class="btn btn-outline-danger" data-toggle="modal"
+                                    data-target="#removeModal{{cart.id}}">Remove</i></a>
+
+
+
+                        </tr>
+
+
+                        <!-- Modal Remove-->
+                        <div class="modal fade" id="removeModal{{cart.id}}" tabindex="-1" role="dialog"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true" style="left: 0%;top: 30%;">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <p class="modal-title text-danger" id="exampleModalLabel">Remove item</p>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body ">
+                                        Are You sure to Remove the item?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Close</button>
+                                        <a href="/cart/removeWishlist/{{wishlist.product.id}}"><button type="button"
+                                                class="btn btn-danger">Remove</button></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {%endfor%}
+
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+</div>
+{% endblock %}

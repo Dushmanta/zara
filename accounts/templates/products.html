@@ -1,0 +1,353 @@
+{% extends 'base.html' %}
+{% load static%}
+
+{% block content%}
+
+<!-- Product -->
+<div class="bg0 m-t-100 p-b-140">
+    <div class="container">
+        <div class="flex-w flex-sb-m p-b-52">
+            
+            <div >
+                <h3 class="text-center font-weight-bold" style="color: #4D0808; font-family:poppins;text-transform: uppercase;">{{category.category_name}}</h3>
+            </div>
+
+            <div class="flex-w flex-c-m m-tb-10">
+                <div class="flex-c-m stext-106 cl6 size-104 bor4 pointer hov-btn3 trans-04 m-r-8 m-tb-4 js-show-filter">
+                    <i class="icon-filter cl2 m-r-6 fs-15 trans-04 zmdi zmdi-filter-list"></i>
+                    <i class="icon-close-filter cl2 m-r-6 fs-15 trans-04 zmdi zmdi-close dis-none"></i>
+                     Filter
+                </div>
+
+                <div class="flex-c-m stext-106 cl6 size-105 bor4 pointer hov-btn3 trans-04 m-tb-4 js-show-search">
+                    <i class="icon-search cl2 m-r-6 fs-15 trans-04 zmdi zmdi-search"></i>
+                    <i class="icon-close-search cl2 m-r-6 fs-15 trans-04 zmdi zmdi-close dis-none"></i>
+                    Search
+                </div>
+            </div>
+            
+            <!-- Search product -->
+            <div class="dis-none panel-search w-full p-t-10 p-b-15">
+                <div class="bor8 dis-flex p-l-15">
+                    <button class="size-113 flex-c-m fs-16 cl2 hov-cl1 trans-04">
+                        <i class="zmdi zmdi-search"></i>
+                    </button>
+
+                    <form action="">
+                        <input class="mtext-107 cl2 size-114 plh2 p-r-15" id="search" type="search" name="search" placeholder="Search">
+                    <button class="btn btn-primary d-none">Search</button>
+                    </form>
+                </div>	
+            </div>
+
+            <!-- Filter -->
+            <div class="dis-none panel-filter w-full p-t-10">
+                <div class="wrap-filter flex-w bg6 w-full p-lr-40 p-t-27 p-lr-15-sm">
+                    
+
+                    <div class="filter-col2 p-r-15 p-b-27">
+                        <div class="mtext-102 cl2 p-b-15">
+                            Price
+                        </div>
+
+                        <form action="">
+                            <select class="form-control" name="price" id="price-list" onchange="location = finalurl2();" style="margin-left: auto;">
+                                <option value="" id="price-placeholder" disabled selected hidden>Price</option>
+                                <option id="pr500" value="500">less than ₹500</option>
+                                <option id="pr1000" value="1000">less than ₹1000</option>
+                                <option id="pr2000" value="2000">less than ₹2000</option>
+                                <option id="pr5000" value="5000">less than ₹5000</option>
+                              </select>
+                        </form>
+                    
+
+
+                        <!-- <ul>
+                            <li class="p-b-6">
+                            <input type="hidden" name="topic" value="My Topic" placeholder="0098797" />
+                                
+                            </li>
+                            
+                            <li class="p-b-6">
+                                <a href="/product_filter" type="search" name="search500" class="filter-link stext-106 trans-04">
+                                    ₹0 - ₹500
+                                </a>
+                            </li>
+
+                            <li class="p-b-6">
+                                <a href="/product_filter" type="search" name="search1000" class="filter-link stext-106 trans-04">
+                                    ₹500 - ₹1000
+                                </a>
+                            </li>
+
+                            <li class="p-b-6">
+                                <a href="/product_filter" type="search" name="search1500" class="filter-link stext-106 trans-04">
+                                    ₹1000 - ₹1500
+                                </a>
+                            </li>
+
+                            <li class="p-b-6">
+                                <a href="/product_filter" type="search" name="search2000" class="filter-link stext-106 trans-04">
+                                    ₹1500 - ₹2000
+                                </a>
+                            </li>
+
+                            <li class="p-b-6">
+                                <a href="/product_filter" type="search" name="search2000+" class="filter-link stext-106 trans-04">
+                                    ₹2000+
+                                </a>
+                            </li>
+
+                        </ul> -->
+                       
+                    </div>
+
+                    
+
+                    
+                </div>
+            </div>
+        </div>
+
+        
+
+        <div class="row isotope-grid">
+
+            {%for product in product%}
+            <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
+                <!-- Block2 --><div class="block2">
+                    <div class="block2-pic hov-img0">
+                        {%if product.p_offer > 0 %}
+						<div class="p-b-18" style="position: absolute;" >
+							<span class="block1-name stext-102 trans-04 btn btn-light btn-sm bg-success text-right"
+                             style="color: #fcf9f9;border: none;margin-top: 0.0rem;margin-left: 13rem;">
+								{{product.p_offer}}% off
+							</span>
+						</div>
+                        {%endif%}
+						
+                        <img src="{{product.image.url}}" alt="IMG-PRODUCT">
+                            <!-- <a href="/cart/addtocart/{{product.id}}"></a> -->
+                    {%if product.quantity < 1 %}
+                    <button disabled class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 ">
+                            Add to cart
+                        </button>
+                        </div>
+                    <div class="block2-txt flex-w flex-t p-t-14">
+                        <div class="block2-txt-child1 flex-col-l ">
+                            <p class="text-danger p-l-98"> Out of Stock :(</p>
+                            </div>
+                            </div>
+                    {%else%}
+                        <button onclick=addtocart({{product.id}}) class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 ">
+                            Add to cart
+                        </button>
+                    </div>
+
+                    <div class="block2-txt flex-w flex-t p-t-14">
+                        <div class="block2-txt-child1 flex-col-l ">
+                            <a href="/product_details/{{product.id}}" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+                                {{product.product_name | truncatewords:4}}
+                            </a>
+
+                            {%if product.p_offer_price < 1 and product.c_offer_price < 1  %}
+                            <span class="stext-105 cl3">
+                                ₹{{product.price}}
+                            </span>
+
+                            {%elif product.p_offer_price > 1 and product.c_offer_price is 0 %}
+                            <span class="stext-105" style="color:rgb(52, 151, 52);">
+                                ₹{{product.p_offer_price}} &nbsp;
+                                <del style="color:rgb(240, 94, 94);">₹{{product.price}}</del>
+                            </span>
+
+                            {%elif product.p_offer_price < 1 and product.c_offer_price > 1 %}
+                            <span class="stext-105" style="color:rgb(52, 151, 52);">
+                                ₹{{product.c_offer_price}} &nbsp;
+                                <del style="color:rgb(240, 94, 94);">₹{{product.price}}</del>
+                            </span>
+
+                            {%elif product.p_offer_price < product.c_offer_price and product.c_offer_price > 1 %}
+                            <span class="stext-105" style="color:rgb(52, 151, 52);">
+                                ₹{{product.p_offer_price}} &nbsp;
+                                <del style="color:rgb(240, 94, 94);">₹{{product.price}}</del>
+                            </span>
+
+                            {%elif product.c_offer_price < product.p_offer_price and product.p_offer_price > 1 %}
+                            <span class="stext-105" style="color:rgb(52, 151, 52);">
+                                ₹{{product.c_offer_price}} &nbsp;
+                                <del style="color:rgb(240, 94, 94);">₹{{product.price}}</del>
+                            </span>
+
+                            {%elif product.c_offer_price == product.p_offer_price and product.p_offer_price > 1 and product.c_offer_price > 1 %}
+                            <span class="stext-105" style="color:rgb(52, 151, 52);">
+                                ₹{{product.p_offer_price}} &nbsp;
+                                <del style="color:rgb(240, 94, 94);">₹{{product.price}}</del>
+                            </span>
+                            {%else%}
+                            {%endif%}
+                            
+                            
+
+                            
+                        </div>
+                
+
+
+                        <div class="block2-txt-child2 flex-r p-t-3">
+                        
+                            {% if product in wishlistItems %}
+                            
+                            <a  class=" dis-block pos-relative minus-wishlist" pid ="{{product.id}}">
+                                <img class="icon-heart2 dis-block trans-04" src="{% static 'images/icons/icon-heart-02.png' %}" alt="ICON">
+                            </a>
+                            
+                            {% else %}
+                            <a  class="btn-addwish-b2 dis-block pos-relative plus-wishlist" pid="{{product.id}}">
+                                <img class="icon-heart1 dis-block trans-04" src="{% static 'images/icons/icon-heart-01.png' %}" alt="ICON">
+                            </a>
+                            
+                            {% endif %}
+                           
+            </div>{%endif%}
+                    </div>
+                </div>
+            </div>
+            {%endfor%}
+        </div>
+
+          <!-- ** pagination section** .... -->
+    {% if is_paginated %}
+    <nav class="pagination flex-c-m flex-w w-full p-t-45">
+      <ul class="pagination ">
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" tabindex="-1" aria-disabled="true"
+            href="/products/{{category.id}}?page={{ page_obj.previous_page_number }}">Previous</a>
+        </li>
+        {% endif %}
+        {% for i in paginator.page_range %}
+        {% if i == page_obj.number%}
+        <li class="page-item active" aria-current="page">
+          <a class="page-link" style="background-color: #4d0808;
+          border-color: #4d0808;" href="/products/{{category.id}}?page={{i}}" span class="visually-hidden">{{i}}</span></a>
+        </li>
+        {% else %}
+        <li class="page-item"><a class="page-link" href="/products/{{category.id}}?page={{i}}">{{i}}</a></li>
+        {% endif %}
+        {% endfor %}
+        {% if page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link" tabindex="-1" href="/products/{{category.id}}?page={{ page_obj.next_page_number }}">Next</a>
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+    {% endif %}
+
+
+        
+    </div>
+</div>
+
+<script>
+    function finalurl2() {
+        var url = new URL(window.location.href);
+        var search_params = url.searchParams;
+        search_params.set('price', document.getElementById("price-list").value);
+        url.search = search_params.toString();
+        var new_url = url.toString();
+        return new_url
+      }
+</script>
+<script>
+    $('.plus-wishlist').click(function(){
+        var id=$(this).attr("pid").toString();
+        $.ajax({
+            type:"GET",
+            url:"/cart/addToWishlist",
+            data:{
+                prod_id:id
+            },
+            success:(response)=>{
+                console.log(response.status)
+                if(response.status){
+                    
+                    swal('Item added to wishlist').then(()=>{
+                        location.reload();
+                        })
+                }
+            }
+        })
+    })
+    $('.minus-wishlist').click(function(){
+        var id=$(this).attr("pid").toString();
+        $.ajax({
+            type:"GET",
+            url:"/cart/removeFromWishlist",
+            data:{
+                prod_id:id
+            },
+            success:(response)=>{
+                console.log(response.status)
+                if(response.status){
+                    
+                    swal('Item removed from wishlist').then(()=>{
+                    location.reload();
+                    })
+
+                }
+            }
+        })
+    })
+</script>
+
+
+
+
+
+<!-- <script>
+    $(document).ready(function(){
+        $(document).on('click',".add-wishlist",function(){
+            var _pid=$(this).attr('data-product');
+            var _vm=$(this);
+            // Ajax
+            $.ajax({
+                url:"/cart/addToWishlist",
+                data:{
+                    product:_pid
+                },
+                dataType:'json',
+                success:function(res){
+                    if(res.bool==true){
+                        _vm.addClass('disabled').removeClass('add-wishlist');
+                    }
+                }
+            });
+            // EndAjax
+        });
+
+    });
+</script> -->
+
+
+{% endblock%}
+
+{% block js %}
+<script>
+    function addtocart(id){
+        $.ajax({
+            url:'/cart/addtocart/'+id,
+            method:'get',
+            success:(response)=>{
+                console.log(response.status)
+                if(response.status){
+                    
+                    swal('Item added to Cart');
+                }
+            }
+        })
+    }
+</script>
+
+{% endblock %}

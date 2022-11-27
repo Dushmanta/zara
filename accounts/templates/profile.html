@@ -1,0 +1,359 @@
+{% extends 'base.html' %}
+{% load static%}
+
+
+
+{% block content%}
+
+<style>
+  .wrapper {
+    max-width: 50rem;
+    width: 100%;
+    margin: 0 auto;
+  }
+  .tabs {
+    position: relative;
+    
+    background: #797676;
+    height: 26.75rem;
+  }
+  .tabs::before,
+  .tabs::after {
+    content: "";
+    display: table;
+  }
+  .tabs::after {
+    clear: both;
+  }
+  .tab {
+    float: left;
+  }
+  .tab-switch {
+    display: none;
+  }
+  .tab-label {
+    position: relative;
+    display: block;
+    line-height: 2.75em;
+    height: 3em;
+    padding: 0 1.618em;
+    background: #797676;
+    border-right: 0.125rem solid #797676;
+    color: #fff;
+    cursor: pointer;
+    top: 0;
+    transition: all 0.25s;
+  }
+  .tab-label:hover {
+    top: -0.25rem;
+    transition: top 0.25s;
+  }
+  .tab-content {
+    height: 12rem;
+    position: absolute;
+    z-index: 1;
+    top: 2.75em;
+    left: 0;
+    padding: 1.618rem;
+    background: #fff;
+    color: #2c3e50;
+    opacity: 0;
+    transition: all 0.35s;
+  }
+  .tab-switch:checked + .tab-label {
+    background: #fff;
+    color: #2c3e50;
+    border-bottom: 0;
+    border-right: 0.125rem solid #fff;
+    transition: all 0.35s;
+    z-index: 1;
+    top: -0.0625rem;
+  }
+  .tab-switch:checked + label + .tab-content {
+    z-index: 2;
+    opacity: 1;
+    transition: all 0.35s;
+  }
+</style>
+
+
+<div class="bg0 " style="padding-bottom:8rem;margin-top: 8rem;">
+    <div class="container">
+
+        <div >
+            <h3 class="text-center font-weight-bold" style="color: #4D0808; font-family:poppins;text-transform: uppercase;">Profile</h3>
+        </div>
+
+
+
+
+		<section class="bg-light">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12 mb-sm-5 text-center">
+						<div class="card card-style1 border-0">
+							<div class="card-body p-1-9 p-sm-2-3 p-md-6 p-lg-7">
+								<div class="row align-items-center">
+									<div class="col-lg-6 mb-4 mb-lg-0">
+                <img height="250px" width="250px" style="border-radius:100%;"src="https://cdn.pixabay.com/photo/2017/11/10/05/48/user-2935527_960_720.png">
+
+									</div>
+									<div class="col-lg-6 px-xl-10">
+										
+										<ul class="list-unstyled mb-1-9">
+											<li class="mb-2 mb-xl-3 display-28"><span class="display-26 text-secondary me-2 font-weight-600">Name: </span>{{user.first_name}}</li>
+											<li class="mb-2 mb-xl-3 display-28"><span class="display-26 text-secondary me-2 font-weight-600">Email: </span>{{user.email}}</li>
+											<li class="display-28"><span class="display-26 text-secondary me-2 font-weight-600">Phone:</span> {{user.phone_number}}</li>
+											<div class="mt-4">
+												<a href="" class="btn btn-outline-primary btn-sm " data-toggle="modal" data-target="#modalLoginForm">Edit Profile</a>
+										
+											
+												<a href="" class="btn btn-outline-danger btn-sm  "  data-toggle="modal" data-target="#modalPasswordForm">Change Password</a>
+											</div>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+        <!-- Modal edit Profile -->
+
+      <div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true" style="left: 0%;top: 16%;">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <form action="/edit_user/{{user.id}}" method="post"> {% csrf_token%}
+            <div class="modal-header text-center">
+              <h4 class="modal-title w-100 font-weight-bold">Edit Profile</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body mx-3">
+              <div class="md-form mb-3">
+                <i class="fa fa-user prefix grey-text"></i>
+                <input type="text" id="defaultForm-email" class="form-control " value="{{user.first_name}}" name="name">
+                <label data-error="wrong" data-success="right" for="defaultForm-email"></label>
+              </div>
+
+              <div class="md-form mb-3">
+                <i class="fa fa-envelope prefix grey-text"></i>
+                <input type="text" id="defaultForm-pass" class="form-control" value="{{user.email}}" name="email">
+                <label data-error="wrong" data-success="right" for="defaultForm-pass"></label>
+              </div>
+              <div class="md-form">
+                <i class="fa fa-phone prefix grey-text"></i>
+                <input type="text" id="defaultForm-pass" class="form-control " value="{{user.phone_number}}" name="phone">
+                <label data-error="wrong" data-success="right" for="defaultForm-pass"></label>
+              </div>
+
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+              <button class="btn btn-default">Update</button>
+            </div>
+        </form>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal change password -->
+
+      <div class="modal fade" id="modalPasswordForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+      aria-hidden="true" style="left: 0%;top: 16%;">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <form action="/changePassword/{{user.id}}" method="post"> {% csrf_token%}
+          <div class="modal-header text-center">
+            <h4 class="modal-title w-100 font-weight-bold">Change Password</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body mx-3">
+            <div class="md-form mb-3">
+              <i class="fa fa-lock prefix grey-text"></i>
+              <input type="password" id="defaultForm-email" class="form-control " value="" name="old">
+              <label data-error="wrong" data-success="right" for="defaultForm-email">Current Password</label>
+            </div>
+            <div class="md-form mb-3">
+              <i class="fa fa-lock prefix grey-text"></i>
+              <input type="password" id="defaultForm-email" class="form-control " value="" name="new">
+              <label data-error="wrong" data-success="right" for="defaultForm-email">New Password</label>
+            </div>
+            <div class="md-form mb-3">
+              <i class="fa fa-lock prefix grey-text"></i>
+              <input type="password" id="defaultForm-email" class="form-control " value="" name="confirm">
+              <label data-error="wrong" data-success="right" for="defaultForm-email">Confirm New Password</label>
+            </div>
+
+            
+
+          </div>
+          <div class="modal-footer d-flex justify-content-center">
+            <button class="btn btn-default">Update</button>
+          </div>
+      </form>
+
+        </div>
+      </div>
+    </div>
+
+
+
+    {% if orders %}
+    <div class="row ml-3 ">
+      <h4 style="color:#4D0808;font-family: Poppins-Medium;">Orders</h4>
+    </div>
+
+    <div class="row mt-3">
+    {% for o in oldcart%}
+
+      <div class="col-12 col-sm-6 col-md-3 mt-4 text-sm-center">
+        <div class="card" style="width: 16rem;">
+          <img  class="card-img-top" style="width: 100%; height: 10rem; object-fit: cover;" src="{{o.product.image.url}}" alt="Card image cap">
+          <div class="card-body">
+            <h6 class="card-title" style="font-family:Poppins-Medium;color:#4D0808;">{{o.product.product_name | truncatewords:2}}</h5>
+              
+            <p class="card-text"> <span class="text-primary">Status :</span> {{o.order.status}}</p>
+            <p class="card-text"> <span class="text-primary">Amount :</span>  {{o.product.price}}</p>
+            <p class="card-text"> <span class="text-primary">Qty :</span>  {{o.quantity}}</p>
+            {%if o.order.method == 'Cash on delivery'%}
+            <p class="card-text"> <span class="text-primary">Payment Method :</span>  COD</p>
+            {%else%}
+            <p class="card-text"> <span class="text-primary">Payment Method :</span>  {{o.order.method}}</p>
+            {%endif%}
+            <p class="card-text"> <span class="text-primary"> Ordered on :</span> {{o.order.ordered_date | truncatewords:1 }}</p>
+
+              {% if o.order.status == 'cancelled'%}
+              <button class="btn btn-secondary mt-2 col-12 " disabled>Order cancelled</button>
+              {% elif o.order.status == 'Delivered' %}
+              <a href="/invoice_generate/{{o.order.id}}" target="_blank" class="btn btn-outline-success mt-2 col-5">Invoice</a>
+              <a href="/cart/return_item/{{o.order.id}}"  class="btn btn-outline-danger mt-2 col-5">Return</a>
+              {% elif o.order.status == 'Return' %}
+              <button class="btn btn-secondary mt-2 col-12 " disabled>Return Initited</button>
+              {%else%}
+            <a href="/cart/cancel_order/{{o.order.id}}" class="btn btn-outline-danger mt-2">Cancel order</a>
+
+            {%endif%}
+
+            
+          </div>
+        </div>
+        </div>
+        {%endfor%}
+
+    </div>
+   
+      
+      {%endif%}
+
+
+
+
+
+
+
+
+
+      {% if address %}
+      <div class="row ml-3 mt-5">
+        <h4 style="color:#4D0808;font-family: Poppins-Medium;"> Saved Addresses</h4>
+      </div>
+
+      <div class="row mt-5">
+        {% for address in address %}
+
+        <div class="col-sm-3 ml-5	">
+          <div class="card rounded">
+          <div class="card-body">
+            <p class="card-text"><span style="font-weight: bold;color:black"></span> {{address.name}}</p>
+            <p class="card-text"><span style="font-weight: bold;color:black"></span> {{address.address}}</p>
+            <p class="card-text"><span style="font-weight: bold;color:black"></span> {{address.city}}</p>
+            <p class="card-text"><span style="font-weight: bold;color:black"></span>Pin: {{address.pincode}}</p>
+            <p class="card-text"><span style="font-weight: bold;color:black"></span>Ph: {{address.phone}}</p>
+            <!-- <p class="card-text"><span style="font-weight: bold;color:black">District : </span> {{address.district}}</p> -->
+            <p class="card-text"><span style="font-weight: bold;color:black"></span> {{address.state}}</p>
+            <!-- <p class="card-text"><span style="font-weight: bold;color:black">Landmark : </span> {{address.landmark}}</p> -->
+            <br>
+
+
+            <a href="/editAddress" class="btn btn-outline-primary">Edit </a>
+            <a href=""  data-toggle="modal" data-target="#exampleModal4{{addres.id}}" class="btn btn-outline-danger">Delete</a>
+          </div>
+          </div>
+        </div>
+
+        <div class="modal fade" id="exampleModal4{{addres.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="left: 0%;top: 30%;">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">Delete Address</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                        Are you want to delete <span style="font-weight: bold ;">{{addres.type}} Address </span>?
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                          <a href="/deleteAddress/{{address.id}}">
+                          <button type="button" class="btn btn-primary">Delete</button>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+        </div>
+
+        {% endfor %}
+      </div>
+
+        {% endif%}
+
+			<div class="mt-4 float-right m-r-50">
+				<a href="/addaddress" class="btn  btn-sm ms-5 " style="background-color:#4D0808;color: #fff;">Add new address</a>
+			</div>
+   
+
+     
+
+    
+			
+			
+
+
+
+
+
+				{% for message in messages %}
+				<script>
+					swal('{{message}}')
+				</script>
+				{% endfor %}
+
+				
+
+
+
+
+
+
+
+		</section>
+
+
+           
+
+
+
+        </div>
+
+    </div>
+
+
+{%endblock%}
